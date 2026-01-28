@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Einfaches Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+        }
+
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .result {
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Quiz</h1>
+    <div id="quiz">
+        <div class="question" id="question"></div>
+        <div class="answers" id="answers"></div>
+        <button onclick="nextQuestion()">Nächste Frage</button>
+    </div>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            question: "Wie viele Kontinente gibt es?",
+            answers: ["5", "6", "7"],
+            correct: 2
+        },
+        {
+            question: "Was ist die Hauptstadt von Deutschland?",
+            answers: ["Berlin", "Hamburg", "München"],
+            correct: 0
+        },
+        {
+            question: "Wie viele Tage hat ein Jahr?",
+            answers: ["365", "366", "364"],
+            correct: 0
+        },
+        {
+            question: "Welche Farbe hat der Himmel?",
+            answers: ["Grün", "Blau", "Rot"],
+            correct: 1
+        },
+        {
+            question: "2 + 2 = ?",
+            answers: ["3", "4", "5"],
+            correct: 1
+        },
+        {
+            question: "Welches Tier bellt?",
+            answers: ["Katze", "Hund", "Kuh"],
+            correct: 1
+        },
+        {
+            question: "Wie viele Stunden hat ein Tag?",
+            answers: ["12", "24", "48"],
+            correct: 1
+        },
+        {
+            question: "Welche Sprache sprechen wir hier?",
+            answers: ["Englisch", "Deutsch", "Spanisch"],
+            correct: 1
+        },
+        {
+            question: "Was ist Wasser?",
+            answers: ["Fest", "Flüssig", "Gas"],
+            correct: 1
+        },
+        {
+            question: "Welche Zahl kommt nach 9?",
+            answers: ["8", "9", "10"],
+            correct: 2
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const q = quizData[currentQuestion];
+        document.getElementById("question").innerText = q.question;
+        const answersDiv = document.getElementById("answers");
+        answersDiv.innerHTML = "";
+
+        q.answers.forEach((answer, index) => {
+            answersDiv.innerHTML += `
+                <label>
+                    <input type="radio" name="answer" value="${index}">
+                    ${answer}
+                </label>
+            `;
+        });
+    }
+
+    function nextQuestion() {
+        const selected = document.querySelector('input[name="answer"]:checked');
+        if (!selected) return;
+
+        if (parseInt(selected.value) === quizData[currentQuestion].correct) {
+            score++;
+        }
+
+        currentQuestion++;
+
+        if (currentQuestion < quizData.length) {
+            loadQuestion();
+        } else {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").innerText =
+                `Du hast ${score} von ${quizData.length} Fragen richtig!`;
+        }
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
